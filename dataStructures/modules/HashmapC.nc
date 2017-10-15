@@ -126,7 +126,7 @@ implementation{
 
    }
 
-   
+
    command t Hashmap.get(uint32_t k){
       uint32_t i=0;	uint32_t j=0;
       do{
@@ -169,5 +169,13 @@ implementation{
 
    command uint16_t Hashmap.size(){
       return numofVals;
+   }
+
+   command void Hashmap.printMap() {
+     int i;
+     printf("Printing hashmap (key, value) pairs:\n");
+     for (i = 0; i < numofVals; i++) {
+       printf("(%i, %i)\n",map[i].key, map[i].value);
+     }
    }
 }

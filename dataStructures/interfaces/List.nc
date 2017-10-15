@@ -5,7 +5,7 @@
  * @author UCM ANDES Lab
  * @author Alex Beltran
  * @date   2013/09/03
- * 
+ *
  */
 
 interface List<t>{
@@ -14,8 +14,9 @@ interface List<t>{
     *
     * @param input - data to be inserted
     */
-   command void pushback(t input);
+  command void pushback(t input);
 	command void pushfront(t input);
+  command void printList();
 	command t popback();
 	command t popfront();
 	command t front();

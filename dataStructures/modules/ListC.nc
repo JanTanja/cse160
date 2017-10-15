@@ -91,4 +91,13 @@ implementation{
 	command t List.get(uint16_t position){
 		return container[position];
 	}
+	command void List.printList() {
+		int i;
+		//printf("List: ");
+		for (i = 0; i < size; i++) {
+			printf("%i\n", call List.get(i));
+		}
+		printf("\n");
+		return;
+	}
 }

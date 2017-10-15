@@ -10,16 +10,17 @@
 #include <Timer.h>
 #include "includes/CommandMsg.h"
 #include "includes/packet.h"
-configuration NodeC{
+
+configuration NodeC {
 }
 implementation {
     //component signatures contain 0 or more interfaces
     components MainC;
     components Node;
     components new AMReceiverC(AM_PACK) as GeneralReceive;
-    components new TimerMilliC() as myTimerC; // create a new timer with alias "myTimerC"
+    components new TimerMilliC() as TimerC; // create a new timer with alias "TimerC"
 
-    Node.periodicTimer -> myTimerC; // wire the interface to the component
+    Node.periodicTimer -> TimerC; // wire the interface to the component
 
     Node -> MainC.Boot;
 
@@ -34,10 +35,19 @@ implementation {
     components CommandHandlerC;
     Node.CommandHandler -> CommandHandlerC;
 
-    components new HashmapC(uint16_t, 25) as myHashmap;
-    Node.Hashmap -> myHashmap;
+    components new HashmapC(uint16_t, 19) as Hashmap;
+    Node.neighborMap -> Hashmap;
 
-    components new ListC(uint16_t, 25) as myList;
-    Node.List -> myList;
-    
+    components new ListC(uint16_t, 19) as nodeNeighbors;
+    Node.neighborList -> nodeNeighbors;
+
+    components new ListC(pair, MAX_NODES_FLOODED) as floodingPair;
+    Node.floodingList -> floodingPair;
+
+    components FloodingC; 
+    Node.FloodSender -> FloodingC.FloodSender;
+
+    components RandomC as Random;
+    Node.Random -> Random;
+
 }

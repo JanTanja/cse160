@@ -46,6 +46,8 @@ implementation{
 
    // This is a wrapper around the am sender, that adds queuing and delayed
    // sending
+   // TODO
+   //THIS IS CALLED FROM NODE.nc file in the Sender.send() function in ping event
    command error_t SimpleSend.send(pack msg, uint16_t dest) {
        // First we check to see if we have room in our queue. Since TinyOS is
        // designed for embedded systems, there is no dynamic memory. This forces
@@ -54,6 +56,9 @@ implementation{
        // back into the queue once you are done.
       if(!call Pool.empty()){
          sendInfo *input;
+
+         //dbg(GENERAL_CHANNEL, "Pool Size: %hhu \n", call Pool.empty());
+
 
          input = call Pool.get();
          input->packet = msg;
@@ -68,6 +73,7 @@ implementation{
 
          return SUCCESS;
       }
+      logPack(&msg);
       return FAIL;
    }
 
@@ -149,6 +155,7 @@ implementation{
    // to send again at that point.
    event void AMSend.sendDone(message_t* msg, error_t error){
       //Clear Flag, we can send again.
+      //dbg(GENERAL_CHANNEL, "Message done sending.\n");
       if(&pkt == msg){
          busy = FALSE;
          postSendTask();
