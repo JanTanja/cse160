@@ -1,5 +1,3 @@
-// written by Aleksandr Brodskiy
-
 # ifndef __LINKSTATE__
 # define __LINKSTATE__
 

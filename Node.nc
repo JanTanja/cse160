@@ -69,6 +69,7 @@ implementation {
       // dbg(GENERAL_CHANNEL, "Booted\n");
       //once we boot, start periodic timer to discover neighbors
       call periodicTimer.startPeriodic(call Random.rand16() % 999);
+      //call LSPackTimer.startPeriodic()
       //put a random interval
    }
 
@@ -160,7 +161,7 @@ implementation {
              return msg;
          }
       }
-      // dbg(GENERAL_CHANNEL, "Unknown Packet Type %d\n", len);
+      dbg(GENERAL_CHANNEL, "Unknown Packet Type %d\n", len);
       return msg;
    }
 
