@@ -18,6 +18,7 @@
 module Node {
    uses interface Boot;
    uses interface Timer<TMilli> as periodicTimer;
+   uses interface Timer<TMilli> as LSPackTimer;
    uses interface Hashmap<uint16_t> as neighborMap;
    uses interface List<uint16_t> as neighborList;
    uses interface List<pair> as floodingList;
@@ -39,6 +40,7 @@ module Node {
 }
 
 implementation {
+
    uint16_t seq_num = 0;
    pack sendPackage;
    pair Pair;
@@ -181,6 +183,12 @@ implementation {
     return;
    }
 
+   event void LSPackTimer.fired() {
+    //  while (!(call neighborList.isEmpty())) call neighborList.popback();
+    startLSTimer();
+    return;
+   }
+
    event void CommandHandler.printRouteTable(){}
 
    event void CommandHandler.printLinkState(){}
@@ -222,6 +230,12 @@ implementation {
      // dbg(NEIGHBOR_CHANNEL, "Current Node: (%i), sending to source: (%i)\n", TOS_NODE_ID, message->src);
      call Sender.send(*message, message->src);
      return;
+   }
+
+   void startLSTimer() {
+     makeRoutingPack(&sendPackage, TOS_NODE_ID, AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_NEIGHBOR_DUMP, seq_num, "NEIGHBOR_DUMP", PACKET_MAX_PAYLOAD_SIZE);
+     seq_num++;
+     call Sender.send(sendPackage, AM_BROADCAST_ADDR);
    }
 
    void beginNeighborDiscovery() {
